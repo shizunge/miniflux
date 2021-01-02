@@ -44,6 +44,11 @@ type Feed struct {
 	ReadCount          int       `json:"-"`
 }
 
+// Default settings for the feed query builder
+const (
+	DefaultFeedSorting = "f.parsing_error_count DESC, lower(f.title) ASC"
+)
+
 // List of supported schedulers.
 const (
 	SchedulerRoundRobin     = "round_robin"
