@@ -143,7 +143,7 @@ func (s *Storage) WeeklyFeedEntryCount(userID, feedID int64) (int, error) {
 	err := s.db.QueryRow(query, userID, feedID).Scan(&weeklyCount)
 
 	switch {
-	case err == sql.ErrNoRows:
+	case errors.Is(err, sql.ErrNoRows):
 		return 0, nil
 	case err != nil:
 		return 0, fmt.Errorf(`store: unable to fetch weekly count for feed #%d: %v`, feedID, err)
@@ -159,7 +159,7 @@ func (s *Storage) FeedByID(userID, feedID int64) (*model.Feed, error) {
 	feed, err := builder.GetFeed()
 
 	switch {
-	case err == sql.ErrNoRows:
+	case errors.Is(err, sql.ErrNoRows):
 		return nil, nil
 	case err != nil:
 		return nil, fmt.Errorf(`store: unable to fetch feed #%d: %v`, feedID, err)

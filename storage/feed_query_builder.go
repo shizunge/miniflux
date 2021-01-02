@@ -179,7 +179,7 @@ func (f *FeedQueryBuilder) GetFeeds() (model.Feeds, error) {
 
 	rows, err := f.store.db.Query(query, f.args...)
 	if err != nil {
-		return nil, fmt.Errorf(`store: unable to fetch feeds: %v`, err)
+		return nil, fmt.Errorf(`store: unable to fetch feeds: %w`, err)
 	}
 	defer rows.Close()
 
@@ -224,7 +224,7 @@ func (f *FeedQueryBuilder) GetFeeds() (model.Feeds, error) {
 		)
 
 		if err != nil {
-			return nil, fmt.Errorf(`store: unable to fetch feeds row: %v`, err)
+			return nil, fmt.Errorf(`store: unable to fetch feeds row: %w`, err)
 		}
 
 		if iconID != nil {
@@ -275,7 +275,7 @@ func (f *FeedQueryBuilder) fetchFeedCounter() (unreadCounters map[int64]int, rea
 
 	rows, err := f.store.db.Query(query, f.counterArgs...)
 	if err != nil {
-		return nil, nil, fmt.Errorf(`store: unable to fetch feed counts: %v`, err)
+		return nil, nil, fmt.Errorf(`store: unable to fetch feed counts: %w`, err)
 	}
 	defer rows.Close()
 
@@ -286,7 +286,7 @@ func (f *FeedQueryBuilder) fetchFeedCounter() (unreadCounters map[int64]int, rea
 		var status string
 		var count int
 		if err := rows.Scan(&feedID, &status, &count); err != nil {
-			return nil, nil, fmt.Errorf(`store: unable to fetch feed counter row: %v`, err)
+			return nil, nil, fmt.Errorf(`store: unable to fetch feed counter row: %w`, err)
 		}
 
 		if status == model.EntryStatusRead {
