@@ -68,17 +68,6 @@ func (s *Storage) CountAllFeeds() map[string]int64 {
 	return results
 }
 
-// CountFeeds returns the number of feeds that belongs to the given user.
-func (s *Storage) CountFeeds(userID int64) int {
-	var result int
-	err := s.db.QueryRow(`SELECT count(*) FROM feeds WHERE user_id=$1`, userID).Scan(&result)
-	if err != nil {
-		return 0
-	}
-
-	return result
-}
-
 // DatabaseVersion returns the version of the database which is in use
 func (s *Storage) DatabaseVersion() string {
 	var dbVersion string
