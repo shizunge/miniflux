@@ -59,7 +59,7 @@ func (h *handler) refreshFeed(w http.ResponseWriter, r *http.Request) {
 
 func (h *handler) refreshAllFeeds(w http.ResponseWriter, r *http.Request) {
 	userID := request.UserID(r)
-	jobs, err := h.store.NewUserBatch(userID, h.store.CountFeeds(userID))
+	jobs, err := h.store.NewUserBatch(userID)
 	if err != nil {
 		json.ServerError(w, r, err)
 		return
