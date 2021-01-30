@@ -34,6 +34,8 @@
     "menu.create_category": "カテゴリを作成",
     "menu.mark_page_as_read": "このページを既読にする",
     "menu.mark_all_as_read": "全て既読にする",
+    "menu.mark_feed_as_read": "読み取りとして設定フィード",
+    "menu.mark_category_as_read": "読み取りとして設定されたカテゴリ",
     "menu.show_all_entries": "全ての記事を表示",
     "menu.show_only_unread_entries": "未読の記事だけを表示",
     "menu.refresh_feed": "更新",

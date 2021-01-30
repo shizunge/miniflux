@@ -295,6 +295,16 @@ var templateViewsMap = map[string]string{
                 data-label-loading="{{ t "confirm.loading" }}"
                 data-show-only-unread="{{ if .showOnlyUnreadEntries }}1{{ end }}">{{ t "menu.mark_page_as_read" }}</a>
         </li>
+        <li>
+            <a href="#"
+                data-confirm="true"
+                data-url="{{ route "markCategoryAsRead" "categoryID" .category.ID }}"
+                data-redirect-url="{{ route "categoryEntries" "categoryID" .category.ID }}"
+                data-label-question="{{ t "confirm.question" }}"
+                data-label-yes="{{ t "confirm.yes" }}"
+                data-label-no="{{ t "confirm.no" }}"
+                data-label-loading="{{ t "confirm.loading" }}">{{ t "menu.mark_category_as_read" }}</a>
+        </li>
     {{ end }}
     {{ if .showOnlyUnreadEntries }}
         <li>
@@ -876,7 +886,7 @@ var templateViewsMap = map[string]string{
         ({{ .total }})
     </h1>
     <ul>
-        {{ if .entries }}
+    {{ if .entries }}
         <li>
             <a href="#"
                 data-action="markPageAsRead"
@@ -886,16 +896,26 @@ var templateViewsMap = map[string]string{
                 data-label-loading="{{ t "confirm.loading" }}"
                 data-show-only-unread="{{ if .showOnlyUnreadEntries }}1{{ end }}">{{ t "menu.mark_page_as_read" }}</a>
         </li>
-        {{ end }}
-        {{ if .showOnlyUnreadEntries }}
+        <li>
+            <a href="#"
+                data-confirm="true"
+                data-url="{{ route "markFeedAsRead" "feedID" .feed.ID }}"
+                data-redirect-url="{{ route "feedEntries" "feedID" .feed.ID }}"
+                data-label-question="{{ t "confirm.question" }}"
+                data-label-yes="{{ t "confirm.yes" }}"
+                data-label-no="{{ t "confirm.no" }}"
+                data-label-loading="{{ t "confirm.loading" }}">{{ t "menu.mark_feed_as_read" }}</a>
+        </li>
+    {{ end }}
+    {{ if .showOnlyUnreadEntries }}
         <li>
             <a href="{{ route "feedEntriesAll" "feedID" .feed.ID }}">{{ t "menu.show_all_entries" }}</a>
         </li>
-        {{ else }}
+    {{ else }}
         <li>
             <a href="{{ route "feedEntries" "feedID" .feed.ID }}">{{ t "menu.show_only_unread_entries" }}</a>
         </li>
-        {{ end }}
+    {{ end }}
         <li>
             <a href="{{ route "refreshFeed" "feedID" .feed.ID }}">{{ t "menu.refresh_feed" }}</a>
         </li>
@@ -1617,7 +1637,7 @@ var templateViewsMapChecksums = map[string]string{
 	"api_keys":            "27d401b31a72881d5232486ba17eb47edaf5246eaedce81de88698c15ebb2284",
 	"bookmark_entries":    "eacbbdce7fa85ec66c4c12f02879daab562a17ff79f1aac1805617e83e3a3a42",
 	"categories":          "9dfc3cb7bb91c7750753fe962ee4540dd1843e5f75f9e0a575ee964f6f9923e9",
-	"category_entries":    "ef3005f8f4c96182587acbf31b979cc26b1ac8f755a74cd5a25681260f4b6d63",
+	"category_entries":    "e7316c8caebac39c7c5096e17580c3d3c9e33440cd4713b0c6c1a11f2c406b4a",
 	"category_feeds":      "07154127087f9b127f7290abad6020c35ad9ceb2490b869120b7628bc4413808",
 	"choose_subscription": "22109d760ea8079c491561d0106f773c885efbf66f87d81fcf8700218260d2a0",
 	"create_api_key":      "2fbd74342176b9970d9162a54da99186589621e4c005566a5368fc4a7994ad20",
@@ -1627,7 +1647,7 @@ var templateViewsMapChecksums = map[string]string{
 	"edit_feed":           "3da1edc78a464f33359663028f0b3fd11706b98e0c3851b090a20ccb2f780b02",
 	"edit_user":           "04423f5ea4249a97440ddd892f99ff96c646f6ce26313765ac5293abf257ef3c",
 	"entry":               "07ccdd5b9e99c63872bcab44b70b347cb59424fc8b69fd671b99b832c47277cc",
-	"feed_entries":        "89977ea86b8d43305d587b70e6d9c45c2c88249b3966f2d31051dc7a5f1c48b6",
+	"feed_entries":        "e5f870d78c8ff016cd6f61e29ad7d52935a993d5bb95a8035075b4e1d86de417",
 	"feeds":               "ec7d3fa96735bd8422ba69ef0927dcccddc1cc51327e0271f0312d3f881c64fd",
 	"history_entries":     "261b47e5f2f699a9cef1b3b690f80d7aabf585d05b77d67645d623f7ff6c0fbb",
 	"import":              "1b59b3bd55c59fcbc6fbb346b414dcdd26d1b4e0c307e437bb58b3f92ef01ad1",
