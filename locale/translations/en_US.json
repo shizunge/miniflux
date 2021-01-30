@@ -34,6 +34,8 @@
     "menu.create_category": "Create a category",
     "menu.mark_page_as_read": "Mark this page as read",
     "menu.mark_all_as_read": "Mark all as read",
+    "menu.mark_feed_as_read": "Mark feed as read",
+    "menu.mark_category_as_read": "Mark category as read",
     "menu.show_all_entries": "Show all entries",
     "menu.show_only_unread_entries": "Show only unread entries",
     "menu.refresh_feed": "Refresh",

@@ -29,7 +29,7 @@ func (s *Storage) NewBatch(batchSize int) (jobs model.JobList, err error) {
 }
 
 // NewUserBatch returns a serie of jobs but only for a given user.
-func (s *Storage) NewUserBatch(userID int64, batchSize int) (jobs model.JobList, err error) {
+func (s *Storage) NewUserBatch(userID int64) (jobs model.JobList, err error) {
 	// We do not take the error counter into consideration when the given
 	// user refresh manually all his feeds to force a refresh.
 	query := `
@@ -40,9 +40,24 @@ func (s *Storage) NewUserBatch(userID int64, batchSize int) (jobs model.JobList,
 			feeds
 		WHERE
 			user_id=$1 AND disabled is false
-		ORDER BY next_check_at ASC LIMIT %d
+		ORDER BY next_check_at ASC
 	`
-	return s.fetchBatchRows(fmt.Sprintf(query, batchSize), userID)
+	return s.fetchBatchRows(query, userID)
+}
+
+// NewUserBatchForErrorFeeds returns a serie of jobs for feeds with errors for a given user.
+func (s *Storage) NewUserBatchForErrorFeeds(userID int64) (jobs model.JobList, err error) {
+	query := `
+		SELECT
+			id,
+			user_id
+		FROM
+			feeds
+		WHERE
+			user_id=$1 AND disabled is false AND parsing_error_count > 0
+		ORDER BY next_check_at ASC
+	`
+	return s.fetchBatchRows(query, userID)
 }
 
 func (s *Storage) fetchBatchRows(query string, args ...interface{}) (jobs model.JobList, err error) {

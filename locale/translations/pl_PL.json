@@ -34,6 +34,8 @@
     "menu.create_category": "Utwórz kategorię",
     "menu.mark_page_as_read": "Oznacz jako przeczytane",
     "menu.mark_all_as_read": "Oznacz wszystko jako przeczytane",
+    "menu.mark_feed_as_read": "Zestaw RSS jako przeczytane",
+    "menu.mark_category_as_read": "Zestaw kategoria jako przeczytane",
     "menu.show_all_entries": "Pokaż wszystkie artykuły",
     "menu.show_only_unread_entries": "Pokaż tylko nieprzeczytane artykuły",
     "menu.refresh_feed": "Odśwież",
