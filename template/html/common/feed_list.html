@@ -1,7 +1,12 @@
 {{ define "feed_list" }}
     <div class="items">
         {{ range .feeds }}
-        <article class="item {{ if ne .ParsingErrorCount 0 }}feed-parsing-error{{ end }}">
+        <article class="item {{ if ne .ParsingErrorCount 0 }}feed-parsing-error{{ end }}" 
+                data-disabled="{{ .Disabled }}" 
+                data-errors="{{ .ParsingErrorCount }}"
+                data-title="{{ .Title }}" 
+                data-total="{{ .TotalCount }}" 
+                data-unread="{{ .UnreadCount }}" >
             <div class="item-header" dir="auto">
                 <span class="item-title">
                     {{ if .Icon }}
@@ -11,7 +16,7 @@
                     <a href="{{ route "feedEntries" "feedID" .ID }}">{{ .Title }}</a>
                 </span>
                 <span class="feed-entries-counter">
-                    (<span title="{{ t "page.feeds.unread_counter" }}">{{ .UnreadCount }}</span>/<span title="{{ t "page.feeds.read_counter" }}">{{ .ReadCount }}</span>)
+                    (<span title="{{ t "page.feeds.unread_counter" }}">{{ .UnreadCount }}</span>/<span title="{{ t "page.feeds.total_counter" }}">{{ .TotalCount }}</span>)
                 </span>
                 <span class="category">
                     <a href="{{ route "categoryEntries" "categoryID" .Category.ID }}">{{ .Category.Title }}</a>

@@ -20,7 +20,11 @@ func (h *handler) showFeedsPage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	feeds, err := h.store.FeedsWithCounters(user.ID)
+	builder := h.store.NewFeedQueryBuilder(user.ID)
+	builder.WithCounters()
+	builder.WithOrder(user.FeedSortedBy)
+	builder.WithDirection(user.FeedDirection)
+	feeds, err := builder.GetFeeds()
 	if err != nil {
 		html.ServerError(w, r, err)
 		return
