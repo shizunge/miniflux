@@ -11,6 +11,7 @@ import (
 	"miniflux.app/http/response/html"
 	"miniflux.app/ui/session"
 	"miniflux.app/ui/view"
+	"miniflux.app/validator"
 )
 
 func (h *handler) showFeedsPage(w http.ResponseWriter, r *http.Request) {
@@ -20,7 +21,23 @@ func (h *handler) showFeedsPage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	feeds, err := h.store.FeedsWithCounters(user.ID)
+	feedSortedBy := request.QueryStringParam(r, "feed_sorted_by", user.FeedSortedBy)
+	feedDirection := request.QueryStringParam(r, "feed_direction", user.FeedDirection)
+
+	if validationErr := validator.ValidateFeedSortedBy(feedSortedBy); validationErr != nil {
+		html.ServerError(w, r, validationErr.Error())
+		return
+	}
+	if validationErr := validator.ValidateFeedDirection(feedDirection); validationErr != nil {
+		html.ServerError(w, r, validationErr.Error())
+		return
+	}
+
+	builder := h.store.NewFeedQueryBuilder(user.ID)
+	builder.WithCounters()
+	builder.WithOrder(feedSortedBy)
+	builder.WithDirection(feedDirection)
+	feeds, err := builder.GetFeeds()
 	if err != nil {
 		html.ServerError(w, r, err)
 		return
@@ -34,6 +51,8 @@ func (h *handler) showFeedsPage(w http.ResponseWriter, r *http.Request) {
 	view.Set("user", user)
 	view.Set("countUnread", h.store.CountUnreadEntries(user.ID))
 	view.Set("countErrorFeeds", h.store.CountUserFeedsWithErrors(user.ID))
+	view.Set("feedSortedBy", feedSortedBy)
+	view.Set("feedDirection", feedDirection)
 
 	html.OK(w, r, view.Render("feeds"))
 }

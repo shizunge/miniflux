@@ -47,7 +47,7 @@ var templateViewsMap = map[string]string{
 {{ define "content"}}
 <section class="page-header">
     <h1>{{ t "page.add_feed.title" }}</h1>
-    {{ template "feed_menu" }}
+    {{ template "feed_menu" dict "feedSortedBy" .feedSortedBy "feedDirection" .feedDirection }}
 </section>
 
 {{ if not .categories }}
@@ -391,7 +391,7 @@ var templateViewsMap = map[string]string{
 {{ define "content"}}
 <section class="page-header">
     <h1>{{ t "page.add_feed.title" }}</h1>
-    {{ template "feed_menu" }}
+    {{ template "feed_menu" dict "feedSortedBy" .feedSortedBy "feedDirection" .feedDirection }}
 </section>
 
 <form action="{{ route "chooseSubscription" }}" method="POST">
@@ -972,7 +972,7 @@ var templateViewsMap = map[string]string{
 {{ define "content"}}
 <section class="page-header">
     <h1>{{ t "page.feeds.title" }} ({{ .total }})</h1>
-    {{ template "feed_menu" }}
+    {{ template "feed_menu" dict "feedSortedBy" .feedSortedBy "feedDirection" .feedDirection }}
 </section>
 
 {{ if not .feeds }}
@@ -1041,7 +1041,7 @@ var templateViewsMap = map[string]string{
 {{ define "content"}}
 <section class="page-header">
     <h1>{{ t "page.import.title" }}</h1>
-    {{ template "feed_menu" }}
+    {{ template "feed_menu" dict "feedSortedBy" .feedSortedBy "feedDirection" .feedDirection }}
 </section>
 
 {{ if .errorMessage }}
@@ -1385,6 +1385,21 @@ var templateViewsMap = map[string]string{
     <label for="form-entries-per-page">{{ t "form.prefs.label.entries_per_page" }}</label>
     <input type="number" name="entries_per_page" id="form-entries-per-page" value="{{ .form.EntriesPerPage }}" min="1">
 
+    <label for="form-feed-sorted-by">{{ t "form.prefs.label.feed_sorted_by" }}</label>
+    <select id="form-feed-sorted-by" name="feed_sorted_by">
+        <option value="disabled" {{ if eq "disabled" $.form.FeedSortedBy }}selected="selected"{{ end }}>{{ t "form.prefs.select.feed_sorted_by_disabled" }}</option>
+        <option value="parsing_error_count" {{ if eq "parsing_error_count" $.form.FeedSortedBy }}selected="selected"{{ end }}>{{ t "form.prefs.select.feed_sorted_by_error" }}</option>
+        <option value="title" {{ if eq "title" $.form.FeedSortedBy }}selected="selected"{{ end }}>{{ t "form.prefs.select.feed_sorted_by_title" }}</option>
+        <option value="total_count" {{ if eq "total_count" $.form.FeedSortedBy }}selected="selected"{{ end }}>{{ t "form.prefs.select.feed_sorted_by_total_count" }}</option>
+        <option value="unread_count" {{ if eq "unread_count" $.form.FeedSortedBy }}selected="selected"{{ end }}>{{ t "form.prefs.select.feed_sorted_by_unread_count" }}</option>
+    </select>
+
+    <label for="form-feed-direction">{{ t "form.prefs.label.feed_direction" }}</label>
+    <select id="form-feed-direction" name="feed_direction">
+        <option value="asc" {{ if eq "asc" $.form.FeedDirection }}selected="selected"{{ end }}>{{ t "form.prefs.select.feed_direction_asc" }}</option>
+        <option value="desc" {{ if eq "desc" $.form.FeedDirection }}selected="selected"{{ end }}>{{ t "form.prefs.select.feed_direction_desc" }}</option>
+    </select>
+
     <label><input type="checkbox" name="keyboard_shortcuts" value="1" {{ if .form.KeyboardShortcuts }}checked{{ end }}> {{ t "form.prefs.label.keyboard_shortcuts" }}</label>
 
     <label><input type="checkbox" name="show_reading_time" value="1" {{ if .form.ShowReadingTime }}checked{{ end }}> {{ t "form.prefs.label.show_reading_time" }}</label>
@@ -1614,13 +1629,13 @@ var templateViewsMap = map[string]string{
 
 var templateViewsMapChecksums = map[string]string{
 	"about":               "ec7987f2612764363a07fa61bdbaacd3ccaa12f567b84677bbd20caf026fe5b2",
-	"add_subscription":    "bc0f878b37692a00d51e834536f211843a59703991d2a743ef204b9d6ae38549",
+	"add_subscription":    "ed4325e9c34088d128c36d6193039f75236bd95b2cb751ded769fe02c400d025",
 	"api_keys":            "27d401b31a72881d5232486ba17eb47edaf5246eaedce81de88698c15ebb2284",
 	"bookmark_entries":    "eacbbdce7fa85ec66c4c12f02879daab562a17ff79f1aac1805617e83e3a3a42",
 	"categories":          "9dfc3cb7bb91c7750753fe962ee4540dd1843e5f75f9e0a575ee964f6f9923e9",
 	"category_entries":    "ef3005f8f4c96182587acbf31b979cc26b1ac8f755a74cd5a25681260f4b6d63",
 	"category_feeds":      "07154127087f9b127f7290abad6020c35ad9ceb2490b869120b7628bc4413808",
-	"choose_subscription": "22109d760ea8079c491561d0106f773c885efbf66f87d81fcf8700218260d2a0",
+	"choose_subscription": "5f9f81eb8b3434efe8c1fe2baf6ad2d8f4704d62ecacb357b7111b3674a69296",
 	"create_api_key":      "2fbd74342176b9970d9162a54da99186589621e4c005566a5368fc4a7994ad20",
 	"create_category":     "6b22b5ce51abf4e225e23a79f81be09a7fb90acb265e93a8faf9446dff74018d",
 	"create_user":         "cca0dbdbd846639d5295707de0674e5e75df987dd22b80d75f030f8daa503a85",
@@ -1629,14 +1644,14 @@ var templateViewsMapChecksums = map[string]string{
 	"edit_user":           "04423f5ea4249a97440ddd892f99ff96c646f6ce26313765ac5293abf257ef3c",
 	"entry":               "07ccdd5b9e99c63872bcab44b70b347cb59424fc8b69fd671b99b832c47277cc",
 	"feed_entries":        "89977ea86b8d43305d587b70e6d9c45c2c88249b3966f2d31051dc7a5f1c48b6",
-	"feeds":               "ec7d3fa96735bd8422ba69ef0927dcccddc1cc51327e0271f0312d3f881c64fd",
+	"feeds":               "c3c794dc60d09b9e9f5e713ab1961958a5a5c56b8f6a20a0a7c6f0ceb1652f1f",
 	"history_entries":     "261b47e5f2f699a9cef1b3b690f80d7aabf585d05b77d67645d623f7ff6c0fbb",
-	"import":              "1b59b3bd55c59fcbc6fbb346b414dcdd26d1b4e0c307e437bb58b3f92ef01ad1",
+	"import":              "3d973ebec98583175cc8a49ae9435b8f65730a3785ba6785bbff93ab0accfbc0",
 	"integrations":        "92d5ab36361f9a2e2b9b7e2318494123f4976d4410daf117810ebf6eca8250b6",
 	"login":               "9165434b2405e9332de4bebbb54a93dc5692276ea72e7c5e07f655a002dfd290",
 	"search_entries":      "6a3e5876cb7541a2f08f56e30ab46a2d7d64894ec5e170f627b2dd674d8aeefe",
 	"sessions":            "5d5c677bddbd027e0b0c9f7a0dd95b66d9d95b4e130959f31fb955b926c2201c",
-	"settings":            "8e90e9e48c62990c2aca217054cb4e122e4ed58c377e28d4c150e2d2d22ebe74",
+	"settings":            "f60bda3fb43548dbfd99ff7cdcc2693d35366246a14bf531b4d5c8c5371767b8",
 	"shared_entries":      "f87a42bf44dc3606c5a44b185263c1b9a612a8ae194f75061253d4dde7b095a2",
 	"unread_entries":      "21c584da7ca8192655c62f16a7ac92dbbfdf1307588ffe51eb4a8bbf3f9f7526",
 	"users":               "d7ff52efc582bbad10504f4a04fa3adcc12d15890e45dff51cac281e0c446e45",
