@@ -4,6 +4,8 @@
 package worker // import "miniflux.app/v2/internal/worker"
 
 import (
+	"log/slog"
+
 	"miniflux.app/v2/internal/model"
 	"miniflux.app/v2/internal/storage"
 )
@@ -15,6 +17,12 @@ type Pool struct {
 
 // Push send a list of jobs to the queue.
 func (p *Pool) Push(jobs model.JobList) {
+	nbJobs := len(jobs)
+	if nbJobs > 0 {
+		slog.Info("Created a batch of feeds",
+			slog.Int("nb_jobs", nbJobs),
+		)
+	}
 	for _, job := range jobs {
 		p.queue <- job
 	}

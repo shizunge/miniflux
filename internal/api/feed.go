@@ -86,7 +86,6 @@ func (h *handler) refreshAllFeeds(w http.ResponseWriter, r *http.Request) {
 	slog.Info(
 		"Triggered a manual refresh of all feeds from the API",
 		slog.Int64("user_id", userID),
-		slog.Int("nb_jobs", len(jobs)),
 	)
 
 	go h.pool.Push(jobs)

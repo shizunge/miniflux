@@ -52,7 +52,6 @@ func (h *handler) refreshCategory(w http.ResponseWriter, r *http.Request) int64 
 			"Triggered a manual refresh of all feeds for a given category from the web ui",
 			slog.Int64("user_id", userID),
 			slog.Int64("category_id", categoryID),
-			slog.Int("nb_jobs", len(jobs)),
 		)
 
 		go h.pool.Push(jobs)
